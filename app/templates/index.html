@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}首页 · {{ app_name }}{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>{{ app_name }} · 数据阅读系统</h1>
+  <p>FastAPI 骨架已就绪。业务页面（书籍列表 / 阅读页 / 分享卡页）将在下一步实现。</p>
+  <p class="hint">API 健康检查：<a href="/api/book/health">/api/book/health</a></p>
+</section>
+{% endblock %}

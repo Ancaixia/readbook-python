@@ -1,0 +1,25 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #2d2d2d;
+  background: #faf8f4;
+}
+.site-header {
+  padding: 14px 24px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  font-weight: 700;
+}
+.site-header a { color: #8a5a2b; text-decoration: none; }
+.container { max-width: 860px; margin: 0 auto; padding: 32px 24px; }
+.hero h1 { font-size: 28px; color: #8a5a2b; }
+.hero p { line-height: 1.8; color: #555; }
+.hint a { color: #2b6cb0; }
+.site-footer {
+  margin-top: 48px;
+  padding: 16px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
