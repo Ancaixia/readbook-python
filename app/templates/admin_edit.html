@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}后台 · 编辑句子{% endblock %}
+{% block content %}
+<div class="admin">
+  <h1>{{ '新建句子' if is_new else '编辑句子' }} <span class="muted">· {{ book.title }}</span></h1>
+
+  <form method="post" action="{{ '/admin/book/' ~ book.name ~ '/new' if is_new else '/admin/book/' ~ book.name ~ '/edit/' ~ sentence.id }}">
+    <div class="field">
+      <label>排序 sort</label>
+      <input type="number" name="sort" value="{{ sentence.sort or '' }}">
+    </div>
+
+    <div class="field">
+      <label>原文 original *</label>
+      <textarea name="original" rows="2" required>{{ sentence.original or '' }}</textarea>
+    </div>
+
+    <div class="field">
+      <label>拼音 pinyin</label>
+      <input type="text" name="pinyin" value="{{ sentence.pinyin or '' }}">
+    </div>
+
+    <div class="field">
+      <label>译注 translate_text</label>
+      <textarea name="translate_text" rows="4">{{ sentence.translate_text or '' }}</textarea>
+    </div>
+
+    <div class="field">
+      <label>字词 word_explain</label>
+      <textarea name="word_explain" rows="4">{{ sentence.word_explain or '' }}</textarea>
+    </div>
+
+    <div class="field">
+      <label>导读 intro_reading</label>
+      <textarea name="intro_reading" rows="4">{{ sentence.intro_reading or '' }}</textarea>
+    </div>
+
+    <div class="field">
+      <label>拓展阅读 extended_reading</label>
+      <textarea name="extended_reading" rows="4">{{ sentence.extended_reading or '' }}</textarea>
+    </div>
+
+    <div class="field">
+      <label>故事 story</label>
+      <textarea name="story" rows="4">{{ sentence.story or '' }}</textarea>
+    </div>
+
+    <div class="field">
+      <label>出图提示词 bg_image_prompt</label>
+      <textarea name="bg_image_prompt" rows="2">{{ sentence.bg_image_prompt or '' }}</textarea>
+    </div>
+
+    <div class="field">
+      <label>出图 URL bg_image</label>
+      <input type="text" name="bg_image" value="{{ sentence.bg_image or '' }}">
+    </div>
+
+    <div class="field">
+      <label>出视频提示词 video_prompt</label>
+      <textarea name="video_prompt" rows="2">{{ sentence.video_prompt or '' }}</textarea>
+    </div>
+
+    <div class="field">
+      <label>视频 URL video_url</label>
+      <input type="text" name="video_url" value="{{ sentence.video_url or '' }}">
+    </div>
+
+    <div class="field">
+      <label>扩展字段 meta（JSON）</label>
+      <textarea name="meta" rows="3" placeholder='{"key": "value"}'>{{ meta_text or '' }}</textarea>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn">保存</button>
+      <a href="/admin/book/{{ book.name }}">取消</a>
+      {% if not is_new %}<a href="/book/{{ book.name }}#s-{{ sentence.id }}" target="_blank">预览</a>{% endif %}
+    </div>
+  </form>
+</div>
+{% endblock %}

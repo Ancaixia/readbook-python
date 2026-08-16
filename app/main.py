@@ -11,7 +11,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import Response
 
 from app.core.database import Base, engine
-from app.routers import api, pages
+from app.routers import api, pages, admin
 
 app = FastAPI(title="ReadBook API")
 
@@ -33,3 +33,4 @@ app.mount("/static", NoCacheStaticFiles(directory=_static_dir), name="static")
 
 app.include_router(api.router)
 app.include_router(pages.router)
+app.include_router(admin.router)

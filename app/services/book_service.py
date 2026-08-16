@@ -178,3 +178,59 @@ def get_stat(db: Session, book: Book, user_id: int) -> dict:
         "progress": progress,
         "last_read": last_item,
     }
+
+
+# 后台管理可编辑字段（与 BookSentence 模型对齐）
+EDITABLE_FIELDS = [
+    "original",
+    "pinyin",
+    "translate_text",
+    "word_explain",
+    "intro_reading",
+    "extended_reading",
+    "story",
+    "bg_image_prompt",
+    "bg_image",
+    "video_prompt",
+    "video_url",
+    "sort",
+    "meta",
+]
+
+# 判定"已填充详细内容"的依据字段
+CONTENT_FIELDS = (
+    "translate_text",
+    "word_explain",
+    "intro_reading",
+    "extended_reading",
+    "story",
+)
+
+
+def has_content(sentence: BookSentence) -> bool:
+    """句子是否已填充任一详细内容（译注/字词/导读/拓展/故事）。"""
+    return any(getattr(sentence, f) for f in CONTENT_FIELDS)
+
+
+def update_sentence(
+    db: Session, sentence: BookSentence, data: dict
+) -> BookSentence:
+    """按 data 中的字段原地更新句子（仅更新存在的键）。"""
+    for f in EDITABLE_FIELDS:
+        if f in data:
+            setattr(sentence, f, data[f])
+    db.commit()
+    db.refresh(sentence)
+    return sentence
+
+
+def create_sentence(db: Session, book: Book, data: dict) -> BookSentence:
+    """在指定书下新建一句；book_id 固定取该书。"""
+    sent = BookSentence(book_id=book.id)
+    for f in EDITABLE_FIELDS:
+        if f in data:
+            setattr(sent, f, data[f])
+    db.add(sent)
+    db.commit()
+    db.refresh(sent)
+    return sent

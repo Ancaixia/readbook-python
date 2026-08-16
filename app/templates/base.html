@@ -8,7 +8,7 @@
   {% block head %}{% endblock %}
 </head>
 <body>
-  <header class="site-header"><a href="/">{{ app_name | default('ReadBook') }}</a></header>
+  <header class="site-header"><a href="/">{{ app_name | default('ReadBook') }}</a><a class="nav-admin" href="/admin">后台</a></header>
   <main class="container">
     {% block content %}{% endblock %}
   </main>

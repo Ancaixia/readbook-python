@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}后台 · 书籍列表{% endblock %}
+{% block content %}
+<div class="admin">
+  <h1>后台管理</h1>
+  <p class="muted">选择一本书进入句子内容编辑。</p>
+  <div class="book-grid">
+    {% for b in books %}
+    <a class="book-card" href="/admin/book/{{ b.name }}">
+      <div class="book-card-body">
+        <h2>{{ b.title }}</h2>
+        <p class="meta">{{ b.dynasty or '' }} · {{ b.author or '' }}</p>
+        <p class="desc">{{ b.description or '' }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

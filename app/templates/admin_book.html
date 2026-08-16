@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}后台 · {{ book.title }}{% endblock %}
+{% block content %}
+<div class="admin">
+  <div class="admin-head">
+    <div>
+      <h1>{{ book.title }} <span class="muted">· 句子管理</span></h1>
+      <p class="muted">共 {{ sentences | length }} 句。带「缺内容」标记的尚未填写译注/字词/导读。</p>
+    </div>
+    <a class="btn" href="/admin/book/{{ book.name }}/new">+ 新建句子</a>
+  </div>
+
+  <table class="admin-table">
+    <thead>
+      <tr><th>序</th><th>原文</th><th>状态</th><th>操作</th></tr>
+    </thead>
+    <tbody>
+      {% for s in sentences %}
+      <tr>
+        <td class="num">{{ s.sort }}</td>
+        <td class="orig">{{ s.original }}</td>
+        <td>
+          {% if has_content(s) %}
+            <span class="badge ok">已填充</span>
+          {% else %}
+            <span class="badge miss">缺内容</span>
+          {% endif %}
+        </td>
+        <td class="ops">
+          <a href="/admin/book/{{ book.name }}/edit/{{ s.id }}">编辑</a>
+          <a href="/book/{{ book.name }}#s-{{ s.id }}" target="_blank">预览</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p><a href="/admin">← 返回书籍列表</a></p>
+</div>
+{% endblock %}
