@@ -40,11 +40,12 @@ class BookSentenceOut(BaseModel):
 
 
 class NavItem(BaseModel):
-    """导航列表单条：id + 排序 + 原文摘要。"""
+    """导航列表单条：id + 排序 + 原文 + 拼音。"""
 
     id: int
     sort: int
     original: str
+    pinyin: Optional[str] = None
 
 
 class FootprintSaveIn(BaseModel):

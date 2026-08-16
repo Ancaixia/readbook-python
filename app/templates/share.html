@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}{{ book.title }} · 第 {{ sentence.sort }} 句{% endblock %}
+{% block head %}
+<meta property="og:title" content="{{ book.title }} · 第 {{ sentence.sort }} 句">
+<meta property="og:description" content="{{ sentence.original }}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="{{ page_url }}">
+{% if sentence.bg_image %}<meta property="og:image" content="{{ sentence.bg_image }}">{% endif %}
+<meta name="twitter:card" content="summary_large_image">
+{% endblock %}
+{% block content %}
+<div class="share-card">
+  <p class="brand">{{ book.title }}</p>
+  <p class="sort">第 {{ sentence.sort }} 句</p>
+  <h1 class="original">{{ sentence.original }}</h1>
+  <p class="pinyin">{{ sentence.pinyin or '' }}</p>
+
+  {% if sentence.translate_text %}
+  <details class="block">
+    <summary>译文</summary>
+    <p>{{ sentence.translate_text }}</p>
+  </details>
+  {% endif %}
+  {% if sentence.word_explain %}
+  <details class="block">
+    <summary>字词注解</summary>
+    <p>{{ sentence.word_explain }}</p>
+  </details>
+  {% endif %}
+  {% if sentence.story %}
+  <details class="block">
+    <summary>典故</summary>
+    <p>{{ sentence.story }}</p>
+  </details>
+  {% endif %}
+
+  <div class="actions">
+    <button id="copyBtn" onclick="copyLink()">复制分享链接</button>
+    <a class="reader-link" href="{{ reader_url }}">进入整本阅读 →</a>
+  </div>
+  <p id="copyTip" class="tip"></p>
+
+  <nav class="pager">
+    {% if prev_id %}<a href="/share/{{ book.name }}/{{ prev_id }}">← 上一句</a>{% endif %}
+    {% if next_id %}<a href="/share/{{ book.name }}/{{ next_id }}">下一句 →</a>{% endif %}
+  </nav>
+</div>
+
+<script>
+  function copyLink() {
+    const url = "{{ page_url }}";
+    navigator.clipboard?.writeText(url).then(
+      () => { document.getElementById('copyTip').textContent = '链接已复制：' + url; },
+      () => { document.getElementById('copyTip').textContent = '复制失败，请手动复制：' + url; }
+    );
+  }
+</script>
+{% endblock %}

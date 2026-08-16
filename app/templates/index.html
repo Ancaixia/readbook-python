@@ -1,9 +1,23 @@
 {% extends "base.html" %}
-{% block title %}首页 · {{ app_name }}{% endblock %}
+{% block title %}首页 · {{ app_name | default('ReadBook') }}{% endblock %}
 {% block content %}
 <section class="hero">
-  <h1>{{ app_name }} · 数据阅读系统</h1>
-  <p>FastAPI 骨架已就绪。业务页面（书籍列表 / 阅读页 / 分享卡页）将在下一步实现。</p>
-  <p class="hint">API 健康检查：<a href="/api/book/health">/api/book/health</a></p>
+  <h1>数据阅读系统</h1>
+  <p>经典古籍的现代化阅读。任选一书开始。</p>
+</section>
+
+<section class="book-grid">
+  {% for b in books %}
+  <a class="book-card" href="/book/{{ b.name }}">
+    {% if b.cover_image %}<img src="{{ b.cover_image }}" alt="{{ b.title }}">{% endif %}
+    <div class="book-card-body">
+      <h2>{{ b.title }}</h2>
+      <p class="meta">{{ b.dynasty or '' }} · {{ b.author or '' }}</p>
+      <p class="desc">{{ b.description or '' }}</p>
+    </div>
+  </a>
+  {% else %}
+  <p class="empty">暂无上线书籍。请先运行 <code>python scripts/import_book.py</code> 导入。</p>
+  {% endfor %}
 </section>
 {% endblock %}

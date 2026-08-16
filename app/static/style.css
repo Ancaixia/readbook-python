@@ -23,3 +23,87 @@ body {
   color: #999;
   font-size: 13px;
 }
+.empty { color: #a00; }
+
+/* 书籍列表 */
+.book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.book-card {
+  display: block; background: #fff; border: 1px solid #ececec; border-radius: 10px;
+  overflow: hidden; text-decoration: none; color: inherit; transition: .15s;
+}
+.book-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); transform: translateY(-2px); }
+.book-card img { width: 100%; height: 130px; object-fit: cover; }
+.book-card-body { padding: 14px; }
+.book-card-body h2 { margin: 0 0 6px; font-size: 18px; }
+.book-card-body .meta { margin: 0 0 8px; color: #888; font-size: 13px; }
+.book-card-body .desc { margin: 0; color: #666; font-size: 14px; line-height: 1.6;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* 阅读页 */
+.reader-head { border-bottom: 2px solid #8a5a2b; padding-bottom: 12px; margin-bottom: 20px; }
+.reader-head h1 { color: #8a5a2b; margin: 0 0 4px; }
+.reader-head .meta { color: #888; margin: 0; }
+.toc { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 14px 18px; margin-bottom: 24px; }
+.toc h3 { margin: 0 0 8px; font-size: 15px; }
+.toc ol { margin: 0; padding-left: 20px; columns: 2; }
+.toc li { margin: 4px 0; }
+.toc a { color: #444; text-decoration: none; font-size: 13px; }
+.toc a:hover { color: #8a5a2b; }
+.sentence { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; scroll-margin-top: 20px; }
+.sentence .line { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.sentence .sort { color: #8a5a2b; font-size: 13px; font-weight: 600; }
+.sentence .share-link { font-size: 13px; color: #2b6cb0; text-decoration: none; }
+.sentence .original { font-size: 22px; line-height: 1.9; margin: 6px 0; letter-spacing: 1px; }
+.sentence .pinyin { color: #888; font-size: 14px; margin: 0 0 10px; }
+.sentence .read-detail { color: #2b6cb0; text-decoration: none; font-size: 14px; cursor: pointer; }
+.read-detail:hover { text-decoration: underline; }
+
+/* 详情弹窗（点击「查看译注 / 字词 / 导读」拉取 API 渲染，不离开阅读页） */
+.rb-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45);
+  display: none; align-items: flex-start; justify-content: center;
+  padding: 48px 16px; z-index: 1000; overflow-y: auto;
+}
+.rb-modal-overlay.open { display: flex; }
+.rb-modal {
+  background: #fff; width: 100%; max-width: 640px; border-radius: 14px;
+  padding: 24px 26px; position: relative; box-shadow: 0 12px 40px rgba(0,0,0,.22);
+}
+.rb-modal-close {
+  position: absolute; top: 10px; right: 14px; border: none; background: none;
+  font-size: 26px; line-height: 1; color: #bbb; cursor: pointer;
+}
+.rb-modal-close:hover { color: #555; }
+.rb-modal-head {
+  border-bottom: 2px solid #8a5a2b; padding-bottom: 12px; margin-bottom: 16px; padding-right: 28px;
+}
+.rb-modal .rb-original { font-size: 22px; line-height: 1.8; color: #8a5a2b; letter-spacing: 1px; }
+.rb-modal .rb-pinyin { color: #888; font-size: 14px; margin-top: 4px; }
+.rb-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.rb-tab {
+  padding: 6px 14px; border: 1px solid #e2d9cc; border-radius: 20px;
+  background: #faf8f4; color: #8a5a2b; font-size: 14px; cursor: pointer;
+}
+.rb-tab.active { background: #8a5a2b; color: #fff; border-color: #8a5a2b; }
+.rb-tab-content { font-size: 15px; line-height: 1.95; color: #444; white-space: pre-wrap; min-height: 80px; }
+.rb-loading, .rb-error { color: #888; padding: 16px 0; text-align: center; min-height: 80px; }
+.rb-error { color: #c0392b; }
+
+/* 分享卡页 */
+.share-card { background: #fff; border: 1px solid #eee; border-radius: 14px; padding: 28px 24px; text-align: center; }
+.share-card .brand { color: #8a5a2b; font-weight: 600; letter-spacing: 2px; margin: 0; }
+.share-card .sort { color: #aaa; font-size: 13px; margin: 4px 0 16px; }
+.share-card .original { font-size: 30px; line-height: 1.9; margin: 0 0 12px; }
+.share-card .pinyin { color: #888; margin: 0 0 20px; }
+.share-card .block { text-align: left; border-top: 1px solid #f0f0f0; padding: 12px 0; }
+.share-card .block summary { cursor: pointer; color: #8a5a2b; font-weight: 600; }
+.share-card .block p { line-height: 1.8; color: #555; margin: 8px 0 0; white-space: pre-wrap; }
+.actions { margin: 22px 0 8px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.actions button, .actions .reader-link {
+  background: #8a5a2b; color: #fff; border: none; border-radius: 8px; padding: 10px 18px;
+  font-size: 14px; text-decoration: none; cursor: pointer;
+}
+.actions .reader-link { background: #2b6cb0; }
+.tip { color: #2b6cb0; font-size: 13px; min-height: 18px; }
+.pager { margin-top: 20px; display: flex; justify-content: space-between; }
+.pager a { color: #8a5a2b; text-decoration: none; }

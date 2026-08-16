@@ -1,6 +1,7 @@
 """SQLAlchemy 引擎、会话与声明基类。"""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm.decl_api import DeclarativeMeta
 
 from app.core.config import settings
 
@@ -9,7 +10,7 @@ connect_args = (
 )
 engine = create_engine(settings.database_url, connect_args=connect_args)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-Base = declarative_base()
+Base: DeclarativeMeta = declarative_base()
 
 
 def get_db():

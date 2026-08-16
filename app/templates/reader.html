@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ book.title }} · 阅读{% endblock %}
+{% block content %}
+<div class="reader">
+  <div class="reader-head">
+    <h1>{{ book.title }}</h1>
+    <p class="meta">{{ book.dynasty or '' }} · {{ book.author or '' }}</p>
+  </div>
+
+  <nav class="toc">
+    <h3>目录</h3>
+    <ol>
+      {% for n in nav %}
+      <li><a href="#s-{{ n.id }}">第 {{ n.sort }} 句 · {{ n.original }}</a></li>
+      {% endfor %}
+    </ol>
+  </nav>
+
+  <div class="sentences">
+    {% for n in nav %}
+    <section class="sentence" id="s-{{ n.id }}">
+      <div class="line">
+        <span class="sort">第 {{ n.sort }} 句</span>
+        <a class="share-link" href="{{ share_base }}/{{ n.id }}" target="_blank">分享</a>
+      </div>
+      <p class="original">{{ n.original }}</p>
+      <p class="pinyin">{{ n.pinyin or '' }}</p>
+      <a class="read-detail" href="/api/book/{{ book.name }}/detail/{{ n.id }}" data-detail-url="/api/book/{{ book.name }}/detail/{{ n.id }}">查看译注 / 字词 / 导读 →</a>
+    </section>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="/static/detail-modal.js"></script>{% endblock %}
