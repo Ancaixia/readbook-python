@@ -48,6 +48,16 @@ cp .env.example .env
 # 把输出写进 .env： secret_key=xxxx
 ```
 
+如需小程序微信登录，另在 `.env` 填：
+```
+WECHAT_APPID=你的小程序AppID
+WECHAT_SECRET=你的小程序AppSecret
+```
+（取自微信公众平台 → 开发 → 开发管理 → 开发设置。留空则微信登录接口返回错误，小程序自动降级为未登录仍可浏览。）
+
+> 账号与角色：第一个注册用户自动成为 `admin`（可在后台「用户」页修改他人角色）；
+> 普通用户 `normal` 可登录小程序记录阅读足迹。本地开发库若没有任何 admin，启动时会自动把最早注册的用户提升为 admin。
+
 ---
 
 ## 3. 用 gunicorn 跑 FastAPI（ASGI：`uvicorn` worker）

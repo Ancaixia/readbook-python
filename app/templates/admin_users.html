@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}后台 · 用户管理{% endblock %}
+{% block content %}
+<div class="admin">
+  <h1>用户管理</h1>
+  <p class="muted">首个注册用户自动成为管理员（admin）。管理员可在此修改其他用户的角色；普通用户（normal）可登录小程序记录阅读足迹。</p>
+
+  {% if request.query_params.get('error') %}
+  <div class="rb-error-box">{{ request.query_params.get('error') }}</div>
+  {% endif %}
+
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>用户名</th>
+        <th>登录方式</th>
+        <th>角色</th>
+        <th>注册时间</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.id }}</td>
+        <td>{{ u.username }}</td>
+        <td>
+          {% if u.wechat_openid %}微信{% else %}账号密码{% endif %}
+        </td>
+        <td>
+          {% if u.role == 'admin' %}
+            <span class="role-badge role-admin">管理员</span>
+          {% else %}
+            <span class="role-badge role-normal">普通用户</span>
+          {% endif %}
+        </td>
+        <td class="muted">{{ u.created_at.strftime('%Y-%m-%d %H:%M') if u.created_at else '' }}</td>
+        <td>
+          {% if u.id == current_user_id %}
+            <span class="muted">当前账号</span>
+          {% else %}
+            <form method="post" action="/admin/users/{{ u.id }}/role" class="role-form">
+              <select name="role" onchange="this.form.submit()">
+                <option value="normal" {% if u.role == 'normal' %}selected{% endif %}>普通用户</option>
+                <option value="admin" {% if u.role == 'admin' %}selected{% endif %}>管理员</option>
+              </select>
+            </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p class="muted"><a href="/admin">← 返回书籍管理</a></p>
+</div>
+{% endblock %}

@@ -11,6 +11,9 @@
   <header class="site-header">
     <a href="/">{{ app_name | default('ReadBook') }}</a>
     <nav class="nav">
+      {% if request.state.user_role == 'admin' %}
+        <a class="nav-admin" href="/admin/users">用户</a>
+      {% endif %}
       <a class="nav-admin" href="/admin">后台</a>
       {% if request.state.user_id %}
         <a href="/auth/logout">退出</a>

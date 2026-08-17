@@ -1,16 +1,21 @@
-"""认证路由：用户名/密码 注册、登录、登出。
+"""认证路由：用户名/密码 注册、登录、登出；微信小程序登录。
 
-本期仅实现用户名密码登录；User 表已预留 phone / wechat_openid 字段，
-后续可在此扩展电话验证码、微信 OAuth 登录（绑定同一 user 即可）。
+- 第一个注册用户自动成为 admin；admin 可在后台管理其他用户的角色。
+- 微信登录：用小程序 wx.login 的 code 换 openid，自动建/取用户，返回 user_id/role。
 """
+import json
 import os
+import secrets
+import urllib.parse
+import urllib.request
 
 from fastapi import APIRouter, Depends, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.core.database import get_db
 from app.core.session import (
     SESSION_COOKIE,
@@ -99,8 +104,12 @@ async def register(request: Request, db: Session = Depends(get_db)):
             },
         )
 
+    # 第一个注册用户自动成为 admin
+    any_user = db.scalar(select(User).order_by(User.id).limit(1))
+    role = "admin" if any_user is None else "normal"
+
     salt, pwd_hash = hash_password(password)
-    user = User(username=username, password_hash=pwd_hash, salt=salt)
+    user = User(username=username, password_hash=pwd_hash, salt=salt, role=role)
     db.add(user)
     db.commit()
     db.refresh(user)
@@ -114,4 +123,79 @@ async def register(request: Request, db: Session = Depends(get_db)):
 def logout():
     resp = RedirectResponse("/auth/login", status_code=303)
     resp.delete_cookie(SESSION_COOKIE, path="/")
+    return resp
+
+
+def _exchange_wechat_code(code: str) -> str | None:
+    """用 wx.login 返回的 code 换取 openid（标准库实现，零额外依赖）。"""
+    if not settings.wechat_appid or not settings.wechat_secret:
+        return None
+    url = "https://api.weixin.qq.com/sns/jscode2session?" + urllib.parse.urlencode(
+        {
+            "appid": settings.wechat_appid,
+            "secret": settings.wechat_secret,
+            "js_code": code,
+            "grant_type": "authorization_code",
+        }
+    )
+    try:
+        with urllib.request.urlopen(url, timeout=5) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+        return data.get("openid")
+    except Exception:
+        return None
+
+
+@router.post("/wechat")
+async def wechat_login(request: Request, db: Session = Depends(get_db)):
+    """微信小程序登录：code -> openid -> 自动建/取用户 -> 返回 user_id/role。
+
+    小程序 wx.request 不自动管理 cookie，故 user_id 直接随 JSON 返回，
+    由小程序本地存储并在上报足迹时带上；同时设置 session cookie 以备网页端复用。
+    """
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    code = (body.get("code") or "").strip()
+    if not code:
+        return JSONResponse({"ok": False, "error": "缺少 code"}, status_code=400)
+
+    openid = _exchange_wechat_code(code)
+    if not openid:
+        return JSONResponse(
+            {
+                "ok": False,
+                "error": "微信登录校验失败，请确认后端已配置 WECHAT_APPID/WECHAT_SECRET",
+            },
+            status_code=400,
+        )
+
+    user = db.scalar(select(User).where(User.wechat_openid == openid))
+    if user is None:
+        # 第一个微信用户也自动成为 admin
+        any_user = db.scalar(select(User).order_by(User.id).limit(1))
+        role = "admin" if any_user is None else "normal"
+        # 随机密码，保证 password_hash/salt 非空（微信用户不走密码登录）
+        rsalt, rhash = hash_password(secrets.token_hex(16))
+        user = User(
+            wechat_openid=openid,
+            username=f"wx_{openid}",
+            role=role,
+            password_hash=rhash,
+            salt=rsalt,
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+
+    resp = JSONResponse(
+        {
+            "ok": True,
+            "user_id": user.id,
+            "role": user.role,
+            "username": user.username,
+        }
+    )
+    _set_session(resp, user.id)
     return resp

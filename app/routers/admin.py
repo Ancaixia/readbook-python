@@ -20,6 +20,7 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.models.book import BookSentence
+from app.models.user import User
 from app.services import book_service
 from app.services.book_service import EDITABLE_FIELDS
 
@@ -27,6 +28,35 @@ router = APIRouter(prefix="/admin", tags=["admin"])
 
 _tpl_dir = os.path.join(os.path.dirname(__file__), "..", "templates")
 templates = Jinja2Templates(directory=_tpl_dir)
+
+
+@router.get("/users", response_class=HTMLResponse)
+def admin_users(request: Request, db: Session = Depends(get_db)):
+    users = db.scalars(select(User).order_by(User.id)).all()
+    return templates.TemplateResponse(
+        request,
+        "admin_users.html",
+        {"request": request, "users": users, "current_user_id": request.state.user_id},
+    )
+
+
+@router.post("/users/{user_id}/role")
+async def admin_change_role(
+    request: Request, user_id: int, db: Session = Depends(get_db)
+):
+    # 禁止管理员修改自己的角色，避免把自己降级后无法恢复
+    if request.state.user_id == user_id:
+        return RedirectResponse("/admin/users?error=不能修改自己的角色", status_code=303)
+    target = db.get(User, user_id)
+    if target is None:
+        return RedirectResponse("/admin/users", status_code=303)
+    form = await request.form()
+    new_role = form.get("role")
+    if new_role not in ("admin", "normal"):
+        return RedirectResponse("/admin/users", status_code=303)
+    target.role = new_role
+    db.commit()
+    return RedirectResponse("/admin/users", status_code=303)
 
 
 def _build_data(form) -> dict:

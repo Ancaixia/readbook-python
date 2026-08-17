@@ -112,6 +112,17 @@ body {
 .rb-loading, .rb-error { color: #888; padding: 16px 0; text-align: center; min-height: 80px; }
 .rb-error { color: #c0392b; }
 
+/* 用户管理表格 */
+.rb-error-box { background: #fdecea; color: #c0392b; padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; }
+.user-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #ececec; border-radius: 10px; overflow: hidden; }
+.user-table th, .user-table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+.user-table th { background: #faf8f4; color: #8a5a2b; font-weight: 700; }
+.user-table tr:last-child td { border-bottom: none; }
+.role-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 12px; }
+.role-admin { background: #e8f3e8; color: #2f7d32; }
+.role-normal { background: #eef2f7; color: #5a6b7b; }
+.role-form select { padding: 6px 8px; border: 1px solid #dcdcdc; border-radius: 8px; font-size: 14px; background: #fff; }
+
 /* 后台管理 */
 .admin { max-width: 920px; }
 .admin h1 { color: #8a5a2b; }
