@@ -5,10 +5,12 @@
 提供 **页面（Jinja2 SSR，便于 SEO / 公众号分享）** 与 **API** 两套出口，供 Web 直接浏览、Flutter 客户端调用。
 
 ## 已实现的业务
-- 数据模型（对齐设计）：`books` / `book_sentences` / `user_book_footprints` / `wechat_articles`
+- 数据模型（对齐设计）：`books` / `book_sentences` / `user_book_footprints` / `wechat_articles` / `users`（后台登录，预留 phone / wechat_openid 供后续电话、微信登录）
 - 导入脚本 `scripts/import_book.py`：读取 `data/<book>.json`，建书 + 批量写句子（`bg_image_key → bg_image_prompt` 映射），幂等
 - API：`/api/book/{name}/nav`、`/detail/{id}`、`/footprint/save`、`/stat`
 - 页面：`/`（书籍列表）、`/book/{name}`（阅读页）、`/share/{name}/{id}`（公众号分享卡页，含 OG 元信息 + 复制链接）
+- 后台管理（`/admin`，受 cookie 鉴权保护）+ 用户名密码注册/登录/登出（`/auth`）：句子内容编辑、新建
+- 鉴权：`app/core/session.py`，pbkdf2 密码哈希 + hmac 签名 session cookie，零额外依赖
 
 ## 目录结构
 ```
@@ -57,6 +59,8 @@ cp .env.example .env                  # 默认使用本地 SQLite（readbook.db�
 ## 进度
 - [x] 骨架：目录 / 配置 / 模型 / schema / 路由 / 模板
 - [x] 业务代码：导入脚本、4 个 book 接口、阅读页与分享卡页
+- [x] 后台管理页面 + 用户名密码登录注册（`/admin` 受 cookie 鉴权保护）
+- [ ] 电话 / 微信第三方登录（User 表已预留 `phone` / `wechat_openid` 字段）
 - [ ] Flutter 客户端（将调用本仓库 `/api/book/*`）
 - [ ] 大并发增强（Redis 缓存 / 异步 SQLAlchemy / 限流 / 压测）
 ```

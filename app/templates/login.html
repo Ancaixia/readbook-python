@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}登录 · ReadBook 后台{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <h1>登录后台</h1>
+    {% if error %}<p class="auth-error">{{ error }}</p>{% endif %}
+    <form method="post" action="/auth/login">
+      <label>用户名
+        <input type="text" name="username" autocomplete="username" required>
+      </label>
+      <label>密码
+        <input type="password" name="password" autocomplete="current-password" required>
+      </label>
+      <button type="submit" class="btn btn-block">登录</button>
+    </form>
+    <p class="auth-foot">还没有账号？<a href="/auth/register">去注册</a></p>
+  </div>
+</div>
+{% endblock %}

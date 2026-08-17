@@ -14,6 +14,27 @@ body {
 .site-header a { color: #8a5a2b; text-decoration: none; }
 .site-header { display: flex; justify-content: space-between; align-items: center; }
 .site-header .nav-admin { color: #2b6cb0; font-size: 14px; }
+.site-header .nav { display: inline-flex; align-items: center; gap: 16px; font-weight: 500; }
+.site-header .nav a { color: #2b6cb0; text-decoration: none; font-size: 14px; }
+.site-header .nav a:hover { text-decoration: underline; }
+
+/* 登录 / 注册 */
+.auth-wrap { display: flex; justify-content: center; padding: 48px 16px; }
+.auth-card {
+  width: 100%; max-width: 360px; background: #fff; border: 1px solid #ececec;
+  border-radius: 12px; padding: 28px 26px; box-shadow: 0 6px 24px rgba(0,0,0,.06);
+}
+.auth-card h1 { margin: 0 0 18px; font-size: 22px; color: #8a5a2b; text-align: center; }
+.auth-card label { display: block; font-size: 14px; color: #555; margin-bottom: 14px; }
+.auth-card input {
+  display: block; width: 100%; margin-top: 6px; padding: 9px 11px; font-size: 15px;
+  border: 1px solid #dcdcdc; border-radius: 8px; box-sizing: border-box;
+}
+.auth-card input:focus { outline: none; border-color: #2b6cb0; }
+.auth-card small { display: block; margin-top: 4px; }
+.auth-error { background: #fdecea; color: #c0392b; padding: 9px 12px; border-radius: 8px; font-size: 14px; margin: 0 0 16px; }
+.auth-foot { margin: 16px 0 0; text-align: center; font-size: 14px; color: #888; }
+.btn-block { width: 100%; justify-content: center; margin-top: 4px; }
 .container { max-width: 860px; margin: 0 auto; padding: 32px 24px; }
 .hero h1 { font-size: 28px; color: #8a5a2b; }
 .hero p { line-height: 1.8; color: #555; }

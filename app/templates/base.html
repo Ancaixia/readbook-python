@@ -8,7 +8,17 @@
   {% block head %}{% endblock %}
 </head>
 <body>
-  <header class="site-header"><a href="/">{{ app_name | default('ReadBook') }}</a><a class="nav-admin" href="/admin">后台</a></header>
+  <header class="site-header">
+    <a href="/">{{ app_name | default('ReadBook') }}</a>
+    <nav class="nav">
+      <a class="nav-admin" href="/admin">后台</a>
+      {% if request.state.user_id %}
+        <a href="/auth/logout">退出</a>
+      {% else %}
+        <a href="/auth/login">登录</a>
+      {% endif %}
+    </nav>
+  </header>
   <main class="container">
     {% block content %}{% endblock %}
   </main>
