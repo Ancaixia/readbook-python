@@ -14,6 +14,8 @@
 - 服务器已放行**安全组**的 `80`、`443` 端口（腾讯云控制台 → 安全组 → 入站规则）。
 - 本地代码已放到服务器 `/opt/readbook/readbook-python`（获取方式见下方 **0.1**）。
 
+> 为什么放 `/opt` 而不是 `/var/www`？按 FHS 规范，`/opt` 是「第三方 / 自研应用」目录，适合放置自带虚拟环境（`.venv`）、配置（`.env`）、数据库的自包含服务；而 `/var/www` 是 Web 服务器（nginx/Apache）的**文档根目录**，只用于它**直接托管**的静态网页。本项目 nginx 仅做反向代理（最多 `alias` 一下 `/static`），并不读取 Python 代码，因此应用代码住 `/opt` 更规范、权限隔离更清晰、整目录备份/迁移也更方便。
+
 ---
 
 ## 0.1 把代码弄到服务器：上传目录 vs git 拉取
@@ -42,6 +44,10 @@
   ```bash
   # 服务器上（首次）
   sudo apt install -y git
+  # 关键：先让当前用户拥有 /opt/readbook，再用当前用户 clone（不要用 sudo git clone）
+  sudo mkdir -p /opt/readbook
+  sudo chown -R $USER:$USER /opt/readbook
+  # 私有库推荐用 SSH 地址（免每次 pull 输 token）；也可用 https 但需配 token 凭证
   git clone <你的仓库地址> /opt/readbook/readbook-python
   cd /opt/readbook/readbook-python && cp .env.example .env
 
@@ -49,6 +55,8 @@
   cd /opt/readbook/readbook-python && git pull && sudo systemctl restart readbook
   ```
   > 仓库里务必 `.gitignore` 掉 `.venv/`、`__pycache__/`、`*.pyc`、`.env`、`*.db`。
+  > ⚠️ **不要用 `sudo git clone`**：否则仓库归 root，gunicorn 运行用户（www-data / readbook）读不到 `.venv` 会 502。克隆目录名建议与项目一致（如 `readbook-python`）。
+  > 私有仓库 clone/pull 需认证：在服务器 `ssh-keygen` 生成密钥，把公钥加到 GitHub → Settings → Deploy keys（或账号 SSH keys），用 `git@github.com:用户名/仓库.git` 地址最省心。
 
 **怎么选**：代码若已在 git 里（哪怕只是本地 git + 推到私有仓库），优先 **B（git 拉取）**，部署和更新都省心；若只想尽快跑起来、代码还没入库，用 **A（rsync 上传）** 最快。本项目不依赖任何远程仓库，A、B 都可行。
 

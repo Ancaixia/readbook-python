@@ -1,31 +1,21 @@
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
 *.egg-info/
-.eggs/
-build/
-dist/
-
-# 虚拟环境（本机依赖，相当于 Laravel 的 vendor/）
 .venv/
 venv/
 env/
-ENV/
 
-# 环境变量与密钥
+# 环境与密钥（不要入库！）
 .env
-.env.*
 
-# 本地开发数据库（由 import 脚本生成，不入库）
+# SQLite 数据库（首次 import 生成；若已有数据请单独备份，勿入库）
 *.db
 *.sqlite
 *.sqlite3
 
-# 工具/缓存
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
+# 编辑器 / 系统
 .idea/
 .vscode/
 .DS_Store
+Thumbs.db
