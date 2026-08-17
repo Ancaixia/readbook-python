@@ -1,30 +1,69 @@
-# ReadBook Python 端 · 生产部署指南（腾讯云 CentOS · 2G 内存 · 已有域名）
+# ReadBook Python 端 · 生产部署指南（腾讯云 Ubuntu · 2G 内存 · 已有域名）
 
-目标：把 `readbook-python`（FastAPI）以**生产模式**跑在腾讯云 CentOS 上，用 **nginx 反代 + HTTPS**，对外提供 `/`（阅读页）、`/api/book/*`（小程序 / Flutter 调用）、`/admin`（后台，需登录）。
+目标：把 `readbook-python`（FastAPI）以**生产模式**跑在腾讯云 Ubuntu 上，用 **nginx 反代 + HTTPS**，对外提供 `/`（阅读页）、`/api/book/*`（小程序 / Flutter 调用）、`/admin`（后台，需登录）。
 
 > 2G 内存很紧张，所以：**SQLite 够用（别上 MySQL/Redis）、gunicorn 只开 2 个 worker、不装重型组件**。
+
+> 与 CentOS 的区别（已按 Ubuntu 调整）：包管理器用 `apt`（不是 `dnf`）；防火墙用 `ufw`（不是 `firewalld`）；certbot 在 Ubuntu 官方源直接有（无需 `epel-release`）；运行用户用 `www-data`（Ubuntu 上 nginx 默认用户，不是 `nginx`）。
 
 ---
 
 ## 0. 前置条件
-- 一台 CentOS 7/8 腾讯云 CVM（2G 内存、有公网 IP）。
+- 一台 Ubuntu 22.04 / 24.04 LTS 腾讯云 CVM（2G 内存、有公网 IP）。
 - 一个已解析到该服务器公网 IP 的域名（如 `book.yixialogic.cn`），A 记录指向服务器。
-- 服务器已放行安全组 / 防火墙的 `80`、`443` 端口。
-- 本地代码已 `git` 推到服务器（或 `scp` / 腾讯云 CFS 等），放在 `/opt/readbook/readbook-python`。
+- 服务器已放行**安全组**的 `80`、`443` 端口（腾讯云控制台 → 安全组 → 入站规则）。
+- 本地代码已放到服务器 `/opt/readbook/readbook-python`（获取方式见下方 **0.1**）。
+
+---
+
+## 0.1 把代码弄到服务器：上传目录 vs git 拉取
+
+两种方式都可行，按你的情况选：
+
+**A. 上传本地目录（scp / rsync）** —— 适合代码还没进版本库、或不想把代码放到公网/远程仓库
+- 优点：无需 git 远程仓库、无需推代码；`.env` 等敏感文件也能直接带走。
+- 缺点：每次更新手动传；容易漏文件 / 版本不一致；回滚麻烦。
+- 命令（排除不需要传的）：
+  ```bash
+  # rsync（推荐：增量、可排除，快且干净）
+  rsync -avz --exclude '.venv' --exclude '__pycache__' --exclude '*.pyc' \
+        --exclude '.env' --exclude '*.db' \
+        /本地路径/readbook-python/  用户@服务器IP:/opt/readbook/readbook-python/
+
+  # scp（整目录搬运，慢且不排除，一般仅首次用）
+  scp -r /本地路径/readbook-python 用户@服务器IP:/opt/readbook/
+  ```
+  > `.venv` 不要传（服务器上自己建）；`.env` 和 `*.db` 不要传（服务器本地生成 / 导入）。
+
+**B. 从 git 仓库拉取** —— 适合代码已用 git 管理、更新频繁
+- 优点：更新只需 `git pull` + `systemctl restart readbook`；版本可追溯、易回滚（`git checkout <commit>`）；协作友好。
+- 缺点：需要远程仓库（GitHub 私有库 / 腾讯云 CODING / Gitee）；`.env` 不能入库（服务器本地 `cp .env.example .env`）。
+- 命令：
+  ```bash
+  # 服务器上（首次）
+  sudo apt install -y git
+  git clone <你的仓库地址> /opt/readbook/readbook-python
+  cd /opt/readbook/readbook-python && cp .env.example .env
+
+  # 之后每次更新
+  cd /opt/readbook/readbook-python && git pull && sudo systemctl restart readbook
+  ```
+  > 仓库里务必 `.gitignore` 掉 `.venv/`、`__pycache__/`、`*.pyc`、`.env`、`*.db`。
+
+**怎么选**：代码若已在 git 里（哪怕只是本地 git + 推到私有仓库），优先 **B（git 拉取）**，部署和更新都省心；若只想尽快跑起来、代码还没入库，用 **A（rsync 上传）** 最快。本项目不依赖任何远程仓库，A、B 都可行。
 
 ---
 
 ## 1. 系统依赖与 Python 环境
 
 ```bash
-# CentOS
-sudo dnf install -y python3.11 python3.11-pip nginx   # 或用 python3.11-venv
-# 若没有 venv 包：
-sudo dnf install -y python3.11-venv
+# Ubuntu：更新索引并装基础依赖
+sudo apt update
+sudo apt install -y python3 python3-venv python3-pip nginx
 
 # 建项目虚拟环境（与服务端开发一致，隔离依赖）
 cd /opt/readbook/readbook-python
-python3.11 -m venv .venv
+python3 -m venv .venv
 . .venv/bin/activate
 pip install -U pip
 pip install -r requirements.txt
@@ -36,6 +75,7 @@ cp .env.example .env
 ```
 
 > 生产**不要用 `--reload`**（那是开发模式，会多开一个文件监听进程、吃内存）。
+> Ubuntu 默认 python3 版本（22.04=3.10 / 24.04=3.12）均满足 FastAPI 要求，直接用 `python3` 即可，无需指定小版本。
 
 ---
 
@@ -71,9 +111,11 @@ Description=ReadBook FastAPI
 After=network.target
 
 [Service]
-# CentOS 上通常用 nginx 用户（dnf install nginx 会自动创建）；
-# 也可建专用 deploy 用户。请确保该用户对 /opt/readbook 有读权限。
-User=nginx
+# Ubuntu 上 nginx 默认用户是 www-data。让 gunicorn 也以 www-data 运行，
+# 需保证该用户对 /opt/readbook 有读权限、对 sqlite 库文件有写权限。
+# 更稳妥的做法：建专用用户（见下方说明），并把 User 改成该用户。
+User=www-data
+Group=www-data
 WorkingDirectory=/opt/readbook/readbook-python
 Environment=PATH=/opt/readbook/readbook-python/.venv/bin
 ExecStart=/opt/readbook/readbook-python/.venv/bin/gunicorn app.main:app \
@@ -89,6 +131,14 @@ RestartSec=3
 WantedBy=multi-user.target
 ```
 
+> 推荐：建一个专用系统用户，避免和 www-data 权限纠缠：
+> ```bash
+> sudo useradd -r -s /usr/sbin/nologin readbook
+> sudo chown -R readbook:readbook /opt/readbook
+> ```
+> 然后把上面 service 文件的 `User=www-data` / `Group=www-data` 改成 `User=readbook` / `Group=readbook`。
+> （若用 www-data，需执行 `sudo chown -R www-data:www-data /opt/readbook/readbook-python` 并确保 .venv 也可读。）
+
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl enable --now readbook
@@ -96,7 +146,7 @@ sudo systemctl status readbook      # 应显示 active (running)
 curl http://127.0.0.1:8000/api/book/health   # 期望 {"status":"ok"}
 ```
 
-> 注意：本项目的静态目录 `/static` 由 FastAPI 自身挂载（`StaticFiles`），gunicorn 后面也能直接返回；但生产更推荐让 nginx 直接托管静态文件（见第 5 步），减轻 Python 负担。
+> 注意：本项目的静态目录 `/static` 由 FastAPI 自身挂载（`StaticFiles`），gunicorn 后面也能直接返回；但生产更推荐让 nginx 直接托管静态文件（见第 4 步），减轻 Python 负担。
 
 ---
 
@@ -140,8 +190,8 @@ server {
 
 申请免费证书（certbot）：
 ```bash
-sudo dnf install -y epel-release
-sudo dnf install -y certbot python3-certbot-nginx
+# Ubuntu 官方源自带 certbot，无需 epel-release
+sudo apt install -y certbot python3-certbot-nginx
 sudo certbot --nginx -d book.yixialogic.cn    # 自动改 nginx 配置 + 续期
 sudo nginx -t && sudo systemctl reload nginx
 ```
@@ -155,13 +205,17 @@ sudo nginx -t && sudo systemctl reload nginx
 
 ## 5. 防火墙
 
+腾讯云主要靠**安全组**放行 80/443（已在第 0 步说明）。系统层若启用了 `ufw`（Ubuntu 默认**未启用**），再放行端口：
+
 ```bash
-# firewalld（CentOS 默认）
-sudo firewall-cmd --permanent --add-service=http
-sudo firewall-cmd --permanent --add-service=https
-sudo firewall-cmd --reload
-# 腾讯云还需在「安全组」放行 80/443（入站）
+# ufw（Ubuntu 默认防火墙，默认未启用；若启用才需要下面命令）
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw reload
+# 腾讯云还需在「安全组」放行 80/443（入站）——这是云平台的虚拟防火墙，与系统 ufw 是两回事
 ```
+
+> 若不确定是否启用了 ufw，可用 `sudo ufw status` 查看；显示 `inactive` 则系统层没挡，只需管安全组即可。
 
 ---
 
