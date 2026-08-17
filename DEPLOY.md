@@ -119,11 +119,11 @@ Description=ReadBook FastAPI
 After=network.target
 
 [Service]
-# Ubuntu 上 nginx 默认用户是 www-data。让 gunicorn 也以 www-data 运行，
-# 需保证该用户对 /opt/readbook 有读权限、对 sqlite 库文件有写权限。
-# 更稳妥的做法：建专用用户（见下方说明），并把 User 改成该用户。
-User=www-data
-Group=www-data
+# 简单方案：你用 ubuntu 用户登录、代码目录也属主为 ubuntu（见 0.1 的 chown），
+# 这里直接 User=ubuntu 即可，目录/.venv/sqlite 权限完全一致，最省事。
+# 进阶（最小权限）：可建无登录专用用户并把 User 改成它（见下方说明）。
+User=ubuntu
+Group=ubuntu
 WorkingDirectory=/opt/readbook/readbook-python
 Environment=PATH=/opt/readbook/readbook-python/.venv/bin
 ExecStart=/opt/readbook/readbook-python/.venv/bin/gunicorn app.main:app \
@@ -139,13 +139,13 @@ RestartSec=3
 WantedBy=multi-user.target
 ```
 
-> 推荐：建一个专用系统用户，避免和 www-data 权限纠缠：
+> 进阶（可选，最小权限）：若不想让进程以有 sudo 权限的 ubuntu 用户运行，可建专用系统用户：
 > ```bash
 > sudo useradd -r -s /usr/sbin/nologin readbook
 > sudo chown -R readbook:readbook /opt/readbook
 > ```
-> 然后把上面 service 文件的 `User=www-data` / `Group=www-data` 改成 `User=readbook` / `Group=readbook`。
-> （若用 www-data，需执行 `sudo chown -R www-data:www-data /opt/readbook/readbook-python` 并确保 .venv 也可读。）
+> 然后把 service 的 `User=ubuntu` / `Group=ubuntu` 改成 `User=readbook` / `Group=readbook`。
+> （不建也完全 OK——个人小项目用 ubuntu 用户跑 gunicorn 是常见做法，本文默认即 `ubuntu`。）
 
 ```bash
 sudo systemctl daemon-reload
