@@ -22,11 +22,13 @@ class User(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String(64), unique=True, index=True, nullable=False)
+    username = Column(String(64), unique=True,  index=True, nullable=False)
     password_hash = Column(String(255), nullable=False)
     salt = Column(String(64), nullable=False)
-    role = Column(String(16), default="normal", nullable=False, index=True)  # admin / normal
+    role = Column(String(16), default="normal", nullable=False,  index=True)  # admin / normal
     phone = Column(String(32), unique=True, index=True, nullable=True)  # 预留电话登录
     wechat_openid = Column(String(128), unique=True, index=True, nullable=True)  # 微信登录
+    nickname = Column(String(64), nullable=True)  # 小程序用户可设置的昵称（优先于 username 显示）
+    avatar_url = Column(String(512), nullable=True)  # 头像地址（预留）
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())

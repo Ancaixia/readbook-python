@@ -24,7 +24,7 @@ app = FastAPI(title="ReadBook API")
 
 
 def _migrate_user_role() -> None:
-    """开发期轻量迁移：给 users 表补 role 列；若没有任何 admin 则提升最早用户。
+    """开发期轻量迁移：给 users 表补 role / nickname / avatar_url 列；若没有任何 admin 则提升最早用户。
 
     生产环境应改用 Alembic，这里仅保证本地开发库平滑升级。
     """
@@ -37,6 +37,12 @@ def _migrate_user_role() -> None:
             conn.execute(
                 text("ALTER TABLE users ADD COLUMN role VARCHAR(16) NOT NULL DEFAULT 'normal'")
             )
+    if "nickname" not in cols:
+        with engine.begin() as conn:
+            conn.execute(text("ALTER TABLE users ADD COLUMN nickname VARCHAR(64)"))
+    if "avatar_url" not in cols:
+        with engine.begin() as conn:
+            conn.execute(text("ALTER TABLE users ADD COLUMN avatar_url VARCHAR(512)"))
     with SessionLocal() as db:
         any_admin = db.scalar(select(User).where(User.role == "admin"))
         if any_admin is None:

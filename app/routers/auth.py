@@ -195,7 +195,51 @@ async def wechat_login(request: Request, db: Session = Depends(get_db)):
             "user_id": user.id,
             "role": user.role,
             "username": user.username,
+            "nickname": user.nickname or "",
         }
     )
     _set_session(resp, user.id)
     return resp
+
+
+@router.post("/profile")
+async def update_profile(request: Request, db: Session = Depends(get_db)):
+    """小程序更新昵称/头像（无 cookie 场景：由前端带 user_id 标识用户）。
+
+    注意：小程序 wx.request 不自动管理 cookie，故这里用请求体里的 user_id
+    定位用户（个人项目够用；如需更强安全可改用 session 校验）。
+    """
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    user_id = body.get("user_id")
+    nickname = (body.get("nickname") or "").strip()
+    avatar_url = (body.get("avatar_url") or "").strip()
+
+    if not user_id:
+        return JSONResponse({"ok": False, "error": "缺少 user_id"}, status_code=400)
+    if nickname and len(nickname) > 32:
+        return JSONResponse({"ok": False, "error": "昵称最长 32 字符"}, status_code=400)
+
+    user = db.get(User, user_id)
+    if user is None:
+        return JSONResponse({"ok": False, "error": "用户不存在"}, status_code=404)
+
+    if nickname:
+        user.nickname = nickname
+    if avatar_url:
+        user.avatar_url = avatar_url
+    db.commit()
+    db.refresh(user)
+
+    return JSONResponse(
+        {
+            "ok": True,
+            "user_id": user.id,
+            "role": user.role,
+            "username": user.username,
+            "nickname": user.nickname or "",
+            "avatar_url": user.avatar_url or "",
+        }
+    )
