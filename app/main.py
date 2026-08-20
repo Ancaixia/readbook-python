@@ -4,6 +4,9 @@
 - 挂载静态目录 /static。
 - 注册 API 与页面路由。
 """
+from sqlalchemy.engine.reflection import Inspector
+
+
 import os
 
 from fastapi import FastAPI, Request
@@ -25,7 +28,7 @@ def _migrate_user_role() -> None:
 
     生产环境应改用 Alembic，这里仅保证本地开发库平滑升级。
     """
-    inspector = inspect(engine)
+    inspector: Inspector = inspect(engine)
     if "users" not in inspector.get_table_names():
         return
     cols = [c["name"] for c in inspector.get_columns("users")]
@@ -88,6 +91,7 @@ _static_dir = os.path.join(os.path.dirname(__file__), "static")
 app.mount("/static", NoCacheStaticFiles(directory=_static_dir), name="static")
 
 app.include_router(api.router)
+app.include_router(api.books_router)
 app.include_router(pages.router)
 app.include_router(admin.router)
 app.include_router(auth.router)

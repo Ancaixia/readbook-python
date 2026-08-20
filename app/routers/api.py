@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 
 from app.core.database import get_db
 from app.schemas.book import (
+    BookOut,
     BookSentenceOut,
     FootprintSaveIn,
     FootprintStatOut,
@@ -19,6 +20,18 @@ from app.schemas.book import (
 from app.services import book_service
 
 router = APIRouter(prefix="/api/book", tags=["book"])
+
+# 书籍列表（首页用）：/api/books
+books_router = APIRouter(prefix="/api", tags=["books"])
+
+
+@books_router.get("/books")
+def list_books_api(db: Session = Depends(get_db)) -> dict:
+    books = book_service.list_books(db)
+    return {
+        "books": [BookOut.model_validate(b).model_dump() for b in books],
+        "total": len(books),
+    }
 
 
 @router.get("/health")

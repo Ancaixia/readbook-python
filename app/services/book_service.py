@@ -27,9 +27,14 @@ def get_book_or_404(db: Session, name: str) -> Book:
 
 
 def list_books(db: Session) -> list[Book]:
-    """首页用：返回全部已上线书籍（按 sort 升序）。"""
+    """首页用：返回全部书籍（含预告/未上线，按 sort 升序）。
+
+    前端根据 status 区分「可阅读」与「预告」：
+    - status == 1：已上线，可点进去阅读
+    - status != 1：预告/即将上线，卡片展示但暂不提供正文
+    """
     return list(
-        db.scalars(select(Book).where(Book.status == 1).order_by(Book.sort, Book.id))
+        db.scalars(select(Book).order_by(Book.sort, Book.id))
     )
 
 
