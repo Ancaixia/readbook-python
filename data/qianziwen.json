@@ -1361,144 +1361,145 @@
     "sort": 114,
     "original": "诛斩贼盗，捕获叛亡。",
     "pinyin": "zhū zhǎn zéi dào，bǔ huò pàn wáng。",
-    "translate_text": "",
-    "word_explain": "",
-    "intro_reading": "",
-    "extended_reading": "",
-    "story": "",
-    "bg_image_key": "",
-    "video_prompt": ""
-  },
-  {
+    "translate_text": "惩治斩杀盗贼，捉拿捕获叛乱逃亡之人。",
+    "word_explain": "诛斩：惩处斩杀；贼盗：偷盗劫掠之人；捕获：捉拿俘获；叛亡：叛乱、逃亡的人。",
+    "intro_reading": "承接上文畜牧民生，转入政法治安，讲述维护社会秩序，惩办作乱之人。",
+    "extended_reading": "家国安定离不开律法治安，肃清盗匪、捉拿叛逃者，保障百姓安稳生活。治安政务之后，列举古来多才多艺的名士与能工巧匠。",
+    "story": "官府依法惩治盗贼，捉拿叛乱逃亡之人，守护地方安宁。",
+    "bg_image_key": "古风水墨国风，古代官兵缉拿匪寇，肃穆简约古风画卷",
+    "video_prompt": "国风水墨短视频，古时官兵维护治安，缉捕盗匪叛亡的写意画面"
+},
+{
     "sort": 115,
     "original": "布射辽丸，嵇琴阮啸。",
     "pinyin": "bù shè liáo wán，jī qín ruǎn xiào。",
-    "translate_text": "",
-    "word_explain": "",
-    "intro_reading": "",
-    "extended_reading": "",
-    "story": "",
-    "bg_image_key": "",
-    "video_prompt": ""
-  },
-  {
+    "translate_text": "吕布擅长射箭，宜僚精通弄丸；嵇康善抚古琴，阮籍擅长长啸抒怀。",
+    "word_explain": "布：吕布，善射；辽：熊宜僚，善弄丸杂艺；嵇：嵇康，擅弹琴；阮：阮籍，善长啸。",
+    "intro_reading": "列举四位名士绝技，展现古人各有所长，技艺超群。",
+    "extended_reading": "吕布辕门射戟、熊宜僚弄丸解纷，属于武技杂艺；嵇康弹奏《广陵散》、阮籍山林长啸，代表文人风雅。后文接续记载发明家与巧匠。",
+    "story": "吕布精通射箭，熊宜僚擅长弄丸之术；嵇康善于弹琴，阮籍擅长长啸。",
+    "bg_image_key": "古风水墨国风，吕布射箭、宜僚弄丸、嵇康抚琴、阮籍长啸四景合一淡墨画",
+    "video_prompt": "国风水墨短视频，依次展现射、弄丸、抚琴、长啸四种古人技艺典故"
+},
+{
     "sort": 116,
     "original": "恬笔伦纸，钧巧任钓。",
     "pinyin": "tián bǐ lún zhǐ，jūn qiǎo rèn diào。",
-    "translate_text": "",
-    "word_explain": "",
-    "intro_reading": "",
-    "extended_reading": "",
-    "story": "",
-    "bg_image_key": "",
-    "video_prompt": ""
-  },
-  {
+    "translate_text": "蒙恬创制毛笔，蔡伦改良纸张；马钧心灵手巧，任公善于垂钓。",
+    "word_explain": "恬：蒙恬，相传造笔；伦：蔡伦，改进造纸术；钧：马钧，古代巧匠；任：任公子，善垂钓的隐士。",
+    "intro_reading": "接续上句才艺典故，记录古代发明家与身怀绝技之人。",
+    "extended_reading": "蒙恬、蔡伦改良文房用具，惠及后世；马钧制造机械奇巧无比；任公子垂钓寄托隐逸气度。这些技艺都能化解纷争，造福世间。",
+    "story": "蒙恬制作毛笔，蔡伦改良纸张；马钧心思灵巧，任公子擅长垂钓。",
+    "bg_image_key": "古风水墨国风，制笔、造纸、造机械、垂钓，多典故淡墨写意",
+    "video_prompt": "国风水墨短视频，依次呈现制笔、造纸、巧匠造物、任公垂钓意象"
+},
+{
     "sort": 117,
     "original": "释纷利俗，并皆佳妙。",
     "pinyin": "shì fēn lì sú，bìng jiē jiā miào。",
-    "translate_text": "",
-    "word_explain": "",
-    "intro_reading": "",
-    "extended_reading": "",
-    "story": "",
-    "bg_image_key": "",
-    "video_prompt": ""
-  },
-  {
+    "translate_text": "这些技艺有的化解纷争，有的便利世人，全都精妙美好。",
+    "word_explain": "释纷：排解纠纷；利俗：造福大众、便利世俗；并皆：全都；佳妙：精妙出色。",
+    "intro_reading": "总结前文一众才艺、发明，称赞它们的功用与精妙。",
+    "extended_reading": "前文列举的射艺、琴艺、制笔、造纸等技艺，既能化解矛盾，又能惠及百姓，各有其妙。说完技艺，转而描写绝代美人风姿。",
+    "story": "这些本领有的排解纷争，有的便利世人，全都精妙不凡。",
+    "bg_image_key": "古风水墨国风，各类技艺器物汇聚，淡雅留白",
+    "video_prompt": "国风水墨短视频，各类古人技艺意象缓缓汇聚，赞叹佳妙"
+},
+{
     "sort": 118,
     "original": "毛施淑姿，工颦妍笑。",
     "pinyin": "máo shī shū zī，gōng pín yán xiào。",
-    "translate_text": "",
-    "word_explain": "",
-    "intro_reading": "",
-    "extended_reading": "",
-    "story": "",
-    "bg_image_key": "",
-    "video_prompt": ""
-  },
-  {
+    "translate_text": "毛嫱、西施拥有美好的容貌，蹙眉、欢笑都十分动人美丽。",
+    "word_explain": "毛：毛嫱；施：西施；淑姿：秀丽身姿容貌；工颦：蹙眉好看；妍笑：笑容美艳。",
+    "intro_reading": "描写绝代女子容貌之美，无论忧喜神态皆风姿动人。",
+    "extended_reading": "毛嫱、西施是上古知名美人，皱眉时有忧愁之美，欢笑时有明媚之姿。美人芳华短暂，引出时光飞逝，岁月催人老去。",
+    "story": "毛嫱和西施容貌秀美，无论是轻蹙眉头还是展露笑颜，都十分动人。",
+    "bg_image_key": "古风水墨国风，毛嫱西施淡墨剪影，一颦一笑清雅写意",
+    "video_prompt": "国风水墨短视频，美人蹙眉、含笑两种柔美姿态依次展现"
+},
+{
     "sort": 119,
     "original": "年矢每催，曦晖朗曜。",
     "pinyin": "nián shǐ měi cuī，xī huī lǎng yào。",
-    "translate_text": "",
-    "word_explain": "",
-    "intro_reading": "",
-    "extended_reading": "",
-    "story": "",
-    "bg_image_key": "",
-    "video_prompt": ""
-  },
-  {
+    "translate_text": "岁月如箭矢，时时催人老去；日月光辉，明亮照耀大地。",
+    "word_explain": "年矢：光阴如箭；每催：不停催促；曦晖：日月光芒；朗曜：明亮照耀。",
+    "intro_reading": "由美人芳华易逝，感慨时光匆匆，日月恒常轮转。",
+    "extended_reading": "人生年华短暂，光阴飞逝不停；唯有日月恒久放光。日月之外，还有星斗运转，循环不息。",
+    "story": "光阴像飞箭一般不停催人老去，太阳与月亮的光芒明亮普照世间。",
+    "bg_image_key": "古风水墨国风，日月高悬，光阴箭矢写意，天地辽阔",
+    "video_prompt": "国风水墨短视频，日月轮转，飞箭象征流逝的岁月"
+},
+{
     "sort": 120,
     "original": "璇玑悬斡，晦魄环照。",
     "pinyin": "xuán jī xuán wò，huì pò huán zhào。",
-    "translate_text": "",
-    "word_explain": "",
-    "intro_reading": "",
-    "extended_reading": "",
-    "story": "",
-    "bg_image_key": "",
-    "video_prompt": ""
-  },
-  {
+    "translate_text": "北斗星辰悬空运转，月亮由亏到盈，循环普照万物。",
+    "word_explain": "璇玑：北斗星；悬斡：悬空旋转运行；晦魄：月末无光、月初新生的月魄，代指月亮；环照：循环照耀。",
+    "intro_reading": "接续天象，写北斗运转、月相循环，展现天道周行不息。",
+    "extended_reading": "日月星辰自有运行规律，天道恒常。人应当顺应天道，积累善行，谋求长久福运安宁。",
+    "story": "北斗星辰在空中不停运转，月亮盈亏交替，循环照耀大地。",
+    "bg_image_key": "古风水墨国风，夜空北斗高悬，月相盈亏变化，淡墨星空",
+    "video_prompt": "国风水墨短视频，夜空北斗旋转，月亮盈亏循环流转"
+},
+{
     "sort": 121,
     "original": "指薪修祜，永绥吉劭。",
     "pinyin": "zhǐ xīn xiū hù，yǒng suí jí shào。",
-    "translate_text": "",
-    "word_explain": "",
-    "intro_reading": "",
-    "extended_reading": "",
-    "story": "",
-    "bg_image_key": "",
-    "video_prompt": ""
-  },
-  {
+    "translate_text": "如同薪火相传一般积修福善，才能长久安宁，吉祥美好。",
+    "word_explain": "指薪：薪火相传，出自庄子；修祜：修习善行、积累福泽；永绥：长久安定；吉劭：吉祥美好。",
+    "intro_reading": "承接天道轮回，转向人生处世：代代修德积福，可得长久安康吉祥。",
+    "extended_reading": "生命如同薪火，形体虽尽，道义福泽可以传承；坚持修身行善，家族后人长久平安吉祥。修德有成，便可立身朝堂，举止有度。",
+    "story": "如同薪火传承一般持续修善积福，就能长久安稳，保有吉祥美好。",
+    "bg_image_key": "古风水墨国风，薪火相传，君子修身，意境悠远沉静",
+    "video_prompt": "国风水墨短视频，薪火绵延不息，君子积善修福写意画面"
+},
+{
     "sort": 122,
     "original": "矩步引领，俯仰廊庙。",
     "pinyin": "jǔ bù yǐn lǐng，fǔ yǎng láng miào。",
-    "translate_text": "",
-    "word_explain": "",
-    "intro_reading": "",
-    "extended_reading": "",
-    "story": "",
-    "bg_image_key": "",
-    "video_prompt": ""
-  },
-  {
+    "translate_text": "步履合乎礼法，举止端庄；出入朝堂宗庙，进退恭敬得体。",
+    "word_explain": "矩步：步伐合乎礼法；引领：端正仪态；俯仰：进退举止；廊庙：朝堂宗庙，指朝廷。",
+    "intro_reading": "描写有德之人立身朝堂，言行举止恪守礼仪，端庄有度。",
+    "extended_reading": "积德之后入仕为官，行走、进退都遵循礼制，在朝堂宗庙之中庄重自持。日常装束仪容也要端庄谨慎。",
+    "story": "走路合乎礼法，仪态端正，在朝堂宗庙之中进退举止恭敬合宜。",
+    "bg_image_key": "古风水墨国风，大臣身着礼服，行走朝堂，端庄肃穆",
+    "video_prompt": "国风水墨短视频，古人循礼而行，朝堂之上俯仰有度"
+},
+{
     "sort": 123,
     "original": "束带矜庄，徘徊瞻眺。",
     "pinyin": "shù dài jīn zhuāng，pái huái zhān tiào。",
-    "translate_text": "",
-    "word_explain": "",
-    "intro_reading": "",
-    "extended_reading": "",
-    "story": "",
-    "bg_image_key": "",
-    "video_prompt": ""
-  },
-  {
+    "translate_text": "整束衣带，仪容端庄自持；从容徘徊，登高远望深思。",
+    "word_explain": "束带：整理衣带，整肃衣冠；矜庄：端庄自重；徘徊：从容缓步；瞻眺：登高远望，深思谋划。",
+    "intro_reading": "接续朝堂仪态，写平日衣冠自重，从容远望、深思远虑。",
+    "extended_reading": "无论上朝还是独处，都要端正衣冠，保持庄重；时常登高远望，胸怀大局。行文至此，作者自谦学识浅薄。",
+    "story": "整理衣带，仪容庄重自持，从容漫步，登高远望，深思远虑。",
+    "bg_image_key": "古风水墨国风，君子整肃衣冠，登高远眺山河，大气留白",
+    "video_prompt": "国风水墨短视频，古人束带整衣，缓步登高，眺望山河远景"
+},
+{
     "sort": 124,
     "original": "孤陋寡闻，愚蒙等诮。",
     "pinyin": "gū lòu guǎ wén，yú méng děng qiào。",
-    "translate_text": "",
-    "word_explain": "",
-    "intro_reading": "",
-    "extended_reading": "",
-    "story": "",
-    "bg_image_key": "",
-    "video_prompt": ""
-  },
-  {
+    "translate_text": "如果学识浅薄见闻稀少，愚昧蒙昧，就会遭到众人讥笑。",
+    "word_explain": "孤陋寡闻：见识狭隘稀少；愚蒙：愚昧不明事理；等诮：一同受到讥嘲。",
+    "intro_reading": "作者自谦，同时劝诫世人勤学，避免学识浅陋受人讥讽。",
+    "extended_reading": "前文铺陈天地、历史、修身、才艺，结尾自我谦抑，说明不学则浅陋被人耻笑。最后一句专门讲解文言虚词，收束全篇千字文。",
+    "story": "人如果见识浅薄、愚昧无知，就会和浅陋之人一样受到讥笑。",
+    "bg_image_key": "古风水墨国风，古人展卷自省，简淡自省意境",
+    "video_prompt": "国风水墨短视频，人物面对书卷自省，劝勉勤学开阔见闻"
+},
+{
     "sort": 125,
     "original": "谓语助者，焉哉乎也。",
     "pinyin": "wèi yǔ zhù zhě，yān zāi hū yě。",
-    "translate_text": "",
-    "word_explain": "",
-    "intro_reading": "",
-    "extended_reading": "",
-    "story": "",
-    "bg_image_key": "",
-    "video_prompt": ""
-  }
+    "translate_text": "说到文言句末语气助词，就是焉、哉、乎、也这几个字。",
+    "word_explain": "谓：说到；语助：语气助词；焉、哉、乎、也：古汉语常用句末虚词。",
+    "intro_reading": "全篇收尾，以四个文言虚词结束千字全文，兼具识字教学作用。",
+    "extended_reading": "《千字文》原本作为蒙学识字读本，收尾特意列出语气助词，完整收纳千字，通篇押韵，供孩童诵读识字。全文到此完结。",
+    "story": "说起文言里的语气助词，便是焉、哉、乎、也这四个字。",
+    "bg_image_key": "古风水墨国风，书卷缓缓展开，千字全文收尾，留白大气",
+    "video_prompt": "国风水墨短视频，书卷徐徐铺开，呈现焉哉乎也四字，全篇收束"
+}
+
 ]
